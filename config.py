@@ -7,7 +7,7 @@ import sys
 basedir = os.path.abspath(os.path.dirname(__file__))
 PACKAGE_ROOT = pathlib.Path(basedir)
 
-BASE_URL = "/scorer/api/v1/"
+BASE_URL = "/api/v1/"
 
 FORMATTER = logging.Formatter(
     "%(asctime)s — %(name)s — %(levelname)s —"
