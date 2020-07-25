@@ -1,13 +1,16 @@
 from flask import Flask
 
+from config import config
 
-def create_app() -> Flask:
+def create_app(config_name=None) -> Flask:
     """Create a flask app instance."""
 
-    flask_app = Flask('ml_api')
+    app = Flask("__name__")
+    app.config.from_object(config[config_name])
+    config[config_name].init_app(app)
 
     # import blueprints
     from scorer.controller import prediction_app
-    flask_app.register_blueprint(prediction_app)
+    app.register_blueprint(prediction_app)
 
-    return flask_app
+    return app
