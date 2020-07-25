@@ -11,23 +11,26 @@ BASE_URL = "/api/v1/"
 
 FORMATTER = logging.Formatter(
     "%(asctime)s — %(name)s — %(levelname)s —"
-    "%(funcName)s:%(lineno)d — %(message)s")
+    "%(funcName)s:%(lineno)d — %(message)s"
+)
 
-LOG_DIR = PACKAGE_ROOT / 'logs'
+LOG_DIR = PACKAGE_ROOT / "logs"
 LOG_DIR.mkdir(exist_ok=True)
-LOG_FILE = LOG_DIR / 'scorer.log'
+LOG_FILE = LOG_DIR / "scorer.log"
+
 
 def get_console_handler():
     console_handler = logging.StreamHandler(sys.stdout)
     console_handler.setFormatter(FORMATTER)
     return console_handler
 
+
 def get_file_handler():
-    file_handler = TimedRotatingFileHandler(
-        LOG_FILE, when='midnight')
+    file_handler = TimedRotatingFileHandler(LOG_FILE, when="midnight")
     file_handler.setFormatter(FORMATTER)
     file_handler.setLevel(logging.WARNING)
     return file_handler
+
 
 def get_logger(*, logger_name):
     """Get logger with prepared handlers."""
@@ -41,6 +44,7 @@ def get_logger(*, logger_name):
     logger.propagate = False
 
     return logger
+
 
 class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -57,6 +61,7 @@ class Config:
     def init_app(app):
         pass
 
+
 class DevConfig(Config):
     DEVELOPMENT = True
     DEBUG = True
@@ -69,14 +74,21 @@ class DevConfig(Config):
 
 class ProductionConfig(Config):
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = f"sqlite:///{os.path.join(basedir, 'data.db')}"  # TODO: change DB parameters
+    SQLALCHEMY_DATABASE_URI = (
+        f"sqlite:///{os.path.join(basedir, 'data.db')}"
+    )  # TODO: change DB parameters
 
     @classmethod
     def init_app(cls, app):
         Config.init_app(app)
 
+
 class TestingConfig(Config):
     TESTING = True
 
 
-config = {"production": ProductionConfig, "dev": DevConfig, "test": TestingConfig}
+config = {
+    "production": ProductionConfig,
+    "dev": DevConfig,
+    "test": TestingConfig,
+}
