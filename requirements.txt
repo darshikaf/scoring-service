@@ -1,13 +1,5 @@
-black==19.3b0
-coverage==5.1
 Flask==1.1.2
 Flask-Cors==3.0.8
 Flask-JWT-Extended==3.24.1
-Flask-Migrate==2.5.2
-Flask-SimpleLDAP==1.4.0
 Flask-SQLAlchemy==2.4.1
-marshmallow==3.6.1
-mypy==0.770
-pluggy==0.13.1
 Werkzeug==1.0.1
-regression_model-0.1.1-py3-none-any.whl # TODO: bake into the docker image

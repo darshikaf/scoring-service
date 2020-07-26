@@ -1,0 +1,27 @@
+DOCKER_IMAGE := darkf-build-testing:latest
+TERM := docker run --rm -it -v $(shell pwd):/regression_model -w /regression_model -e PYTTHONPATH=. darshika/${DOCKER_IMAGE}
+BUILDENV	:= docker run --rm -v $(shell pwd):/regression_model -w /regression_model -e PYTTHONPATH=. darshika/${DOCKER_IMAGE}
+
+bash:
+	$(TERMENV) bash
+
+clean-python:
+	rm -rf __pycache__ .coverage .mypy_cache .pytest_cache scorer/__pycache__ scorer/*/__pycache__ tests/__pycache__ tests/results.xml
+
+lint-check-python:
+	$(BUILDENV) black -l 79 --check .
+
+lint-python:
+	$(BUILDENV) black -l 79 .
+
+test-coverage-python:
+	$(BUILDENV) /bin/bash -c "pip install -r requirements.txt && pip install dependency/regression_model-0.1.1-py3-none-any.whl && coverage run --source scorer -m pytest --junit-xml=tests/results.xml"
+	$(BUILDENV) coverage report
+
+test-python:
+	$(BUILDENV) /bin/bash -c "pip install -r requirements.txt && pytest"
+
+type-check-python:
+	$(BUILDENV) mypy --ignore-missing-imports scorer tests
+
+.PHONY: bash
